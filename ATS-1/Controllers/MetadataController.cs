@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ATS_1.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,11 +12,18 @@ namespace ATS_1.Controllers
     [ApiController]
     public class MetadataController : ControllerBase
     {
+        private readonly IMetadataServices _metadataServices;
+
+        private MetadataController(IMetadataServices metadataServices)
+        {
+            _metadataServices = metadataServices;
+        }
+        
         // GET: api/Metadata
         [HttpGet(Name = "GetAllMetadata")]
         public IActionResult Get()
         {
-            return Ok();
+            return Ok(_metadataServices.GetAllMetadata());
         }
 
         // GET: api/Metadata/5

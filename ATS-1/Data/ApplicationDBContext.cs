@@ -9,8 +9,7 @@ namespace ATS_1.Data
 {
     public class ApplicationDBContext : DbContext
     {
-        public ApplicationDBContext(DbContextOptions options) : base(options)
-        { }
+        public ApplicationDBContext(DbContextOptions options) : base(options){ }
         public ApplicationDBContext () { }
         public DbSet<Applicant> Applicants { set; get; }
         public DbSet<Metadata> Metadata { set; get; }

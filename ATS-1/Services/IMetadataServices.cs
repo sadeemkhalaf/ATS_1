@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ATS_1.Services.MetadataServices
+namespace ATS_1.Services
 {
-    public interface IMetadataServices
+    interface IMetadataServices
     {
+
         List<Metadata> GetAllMetadata();
         // getAll
-        Index GetMetadata(int ID);
+        Metadata GetMetadata(int ID);
         // getByID
         void InsertMetadata(Metadata metadata);
         // insert(obj)

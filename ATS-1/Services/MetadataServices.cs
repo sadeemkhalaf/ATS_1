@@ -9,7 +9,7 @@ namespace ATS_1.Services.MetadataServices
 {
     public class MetadataServices : IMetadataServices
     {
-        private ApplicationDBContext dbContext;
+        private readonly ApplicationDBContext dbContext;
 
         public MetadataServices(ApplicationDBContext _dbContext)
         {
@@ -18,6 +18,7 @@ namespace ATS_1.Services.MetadataServices
 
         public void DeleteMetadata(int id)
         {
+            throw new NotImplementedException();
         }
 
         public List<Metadata> GetAllMetadata()
@@ -28,7 +29,7 @@ namespace ATS_1.Services.MetadataServices
             }
         }
 
-        public Index GetMetadata(int ID)
+        public Metadata GetMetadata(int ID)
         {
             throw new NotImplementedException();
         }

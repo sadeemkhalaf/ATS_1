@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ATS_1.Services.IndexServices
+namespace ATS_1.Services
 {
     interface IIndexServices
     {

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using ATS_1.Data;
 using ATS_1.Services;
+using ATS_1.Services.IndexServices;
+using ATS_1.Services.MetadataServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,6 +33,8 @@ namespace ATS_1
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<ApplicationDBContext>(x => x.UseSqlServer(Configuration.GetConnectionString("ATSContext")), ServiceLifetime.Transient);
             services.AddTransient<IApplicantService, ApplicantService>();
+            services.AddScoped<IMetadataServices, MetadataServices>();
+            services.AddScoped<IIndexServices, IndexServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
