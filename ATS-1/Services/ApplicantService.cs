@@ -55,37 +55,46 @@ namespace ATS_1.Services
         {
             Applicant applicantFound;
 
-            using (var _dbContext = new ApplicationDBContext())
+            using (dbContext)
             {
-                applicantFound = _dbContext.Applicants.Where(appl => appl.Id == id).FirstOrDefault<Applicant>();
-            }
+                applicantFound = dbContext.Applicants.Where(appl => appl.Id == id).FirstOrDefault<Applicant>();
+            
             // the entity is updated in a disconnected context
             if (applicantFound != null) {
+                    if (!applicantFound.status.Equals(applicant.status)) {
+                        Metadata metadata = new Metadata();
+                        metadata.Activity = "status changed";
+                        metadata.ActivityDatetime = DateTime.Now;
+                        metadata.ApplicantID = applicantFound.Id;
+                        dbContext.Metadata.Add(metadata);
+                        dbContext.Entry<Metadata>(metadata).State = EntityState.Added;
+                    }
                     applicantFound.Name = applicant.Name;
                     applicantFound.status = applicant.status;
-                    applicantFound.Phonenumber = applicant.Phonenumber;
+                    applicantFound.PhoneNumber = applicant.PhoneNumber;
                     applicantFound.Email = applicant.Email;
-                    applicantFound.degree = applicant.degree;
+                    applicantFound.Degree = applicant.Degree;
                     applicantFound.University = applicant.University;
-                    applicantFound.Otheruniversity = applicant.Otheruniversity;
-                    applicantFound.Gpa1 = applicant.Gpa1;
-                    applicantFound.gpa2 = applicant.gpa2;
-                    applicantFound.currentposition = applicant.currentposition;
-                    applicantFound.technologies = applicant.technologies;
-                    applicantFound.devexperience = applicant.devexperience;
-                    applicantFound.teamleaderexperience = applicant.teamleaderexperience;
-                    applicantFound.Joindate = applicant.Joindate;
-                    applicantFound.expectedsalary = applicant.expectedsalary;
-                    applicantFound.howdidyoufindus = applicant.howdidyoufindus;
-                    applicantFound.notelog = applicant.notelog;
+                    applicantFound.OtherUniversity = applicant.OtherUniversity;
+                    applicantFound.GPA1 = applicant.GPA1;
+                    applicantFound.GPA2 = applicant.GPA2;
+                    applicantFound.Currentposition = applicant.Currentposition;
+                    applicantFound.Technologies = applicant.Technologies;
+                    applicantFound.Devexperience = applicant.Devexperience;
+                    applicantFound.TeamLeaderExperience = applicant.TeamLeaderExperience;
+                    applicantFound.JoinDate = applicant.JoinDate;
+                    applicantFound.ExpectedSalary = applicant.ExpectedSalary;
+                    applicantFound.Howdidyoufindus = applicant.Howdidyoufindus;
+                    applicantFound.NoteLog = applicant.NoteLog;
+
+                    // mark as modified
+                    dbContext.Entry<Applicant>(applicantFound).State = EntityState.Modified;
                 }
-            using (var dbCtx = new ApplicationDBContext()) {
-                // mark as modified
-                dbCtx.Entry<Applicant>(applicantFound).State = EntityState.Modified;
+
                 // save changes
-                dbCtx.SaveChanges();
-            }
+                dbContext.SaveChanges();
             
+            }
         }
     }
 }

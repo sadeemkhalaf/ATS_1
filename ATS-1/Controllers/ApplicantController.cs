@@ -10,41 +10,41 @@ namespace ATS_1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class ApplicantsController : ControllerBase
     {
         private readonly IApplicantService _applicantService;
-        public ValuesController(IApplicantService applicantService)
+        public ApplicantsController(IApplicantService applicantService)
         {
             _applicantService = applicantService;
         }
-        // GET api/values
+        // GET api/applicants
         [HttpGet]
         public IActionResult Get()
         {
             return Ok(_applicantService.GetApplicants());
         }
 
-        // GET api/values/5
+        // GET api/applicants/5
         [HttpGet("{id}")]
         public ActionResult Get(int id)
         {
             return Ok(_applicantService.GetApplicant(id));
         }
 
-        // POST api/values
+        // POST api/applicants
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT api/values/5
+        // PUT api/applicants/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Applicant applicant)
         {
             _applicantService.UpdateApplicant(applicant, id);
         }
 
-        // DELETE api/values/5
+        // DELETE api/applicants/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

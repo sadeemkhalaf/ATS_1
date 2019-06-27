@@ -10,18 +10,13 @@ namespace ATS_1.Models
     {
         [Key]
         public int Id { set; get; }
-        [Required]
         public string PhoneNumber { set; get; }
-        [Required]
         public string Name { set; get; }
-        [Required]
         public string Email { set; get; }
         public string status { set; get; }
         public string JoinDate { set; get; }
-        [Required]
         public string University { set; get; }
         public string OtherUniversity { set; get; }
-        [Required]
         public string Major { set; get; }
         public string GPA1 { set; get; }
         public string GPA2 { set; get; }
@@ -31,14 +26,12 @@ namespace ATS_1.Models
         public string Currentposition { set; get; }
         public string Howdidyoufindus { set; get; }
         public string NoteLog { set; get; }
-        [Required]
         public string Degree { set; get; }
         public string ExpectedSalary { set; get; }
 
         public string EnglishSkills { set; get; }
-        [Required]
         public string CareerLevel { set; get; }
-        public string LastUpdateLog { set; get; }
+        public string LastUdateLog { set; get; }
         public string ExamScore { set; get; }
         public DateTime ToCallDate { set; get; }
         public DateTime InterviewDate { set; get; }
