@@ -61,20 +61,20 @@ namespace ATS_1.Services
             }
             // the entity is updated in a disconnected context
             if (applicantFound != null) {
-                    applicantFound.name = applicant.name;
+                    applicantFound.Name = applicant.Name;
                     applicantFound.status = applicant.status;
-                    applicantFound.phonenumber = applicant.phonenumber;
-                    applicantFound.email = applicant.email;
+                    applicantFound.Phonenumber = applicant.Phonenumber;
+                    applicantFound.Email = applicant.Email;
                     applicantFound.degree = applicant.degree;
-                    applicantFound.university = applicant.university;
-                    applicantFound.otheruniversity = applicant.otheruniversity;
-                    applicantFound.gpa1 = applicant.gpa1;
+                    applicantFound.University = applicant.University;
+                    applicantFound.Otheruniversity = applicant.Otheruniversity;
+                    applicantFound.Gpa1 = applicant.Gpa1;
                     applicantFound.gpa2 = applicant.gpa2;
                     applicantFound.currentposition = applicant.currentposition;
                     applicantFound.technologies = applicant.technologies;
                     applicantFound.devexperience = applicant.devexperience;
                     applicantFound.teamleaderexperience = applicant.teamleaderexperience;
-                    applicantFound.joindate = applicant.joindate;
+                    applicantFound.Joindate = applicant.Joindate;
                     applicantFound.expectedsalary = applicant.expectedsalary;
                     applicantFound.howdidyoufindus = applicant.howdidyoufindus;
                     applicantFound.notelog = applicant.notelog;
