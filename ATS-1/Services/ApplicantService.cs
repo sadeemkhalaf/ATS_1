@@ -9,7 +9,8 @@ namespace ATS_1.Services
     public class ApplicantService : IApplicantService
     {
         private ApplicationDBContext dbContext;
-        
+        private Random random = new Random();
+
         public ApplicantService(ApplicationDBContext _dbContext)
         {
             dbContext = _dbContext;
@@ -63,10 +64,12 @@ namespace ATS_1.Services
             if (applicantFound != null) {
                     if (!applicantFound.status.Equals(applicant.status)) {
                         Metadata metadata = new Metadata();
+                        metadata.Id = this.random.Next();
                         metadata.Activity = "status changed";
+                        metadata.userName = "admin";
                         metadata.ActivityDatetime = DateTime.Now;
                         metadata.ApplicantID = applicantFound.Id;
-                        dbContext.Metadata.Add(metadata);
+                        //dbContext.Metadata.Add(metadata);
                         dbContext.Entry<Metadata>(metadata).State = EntityState.Added;
                     }
                     applicantFound.Name = applicant.Name;

@@ -12,33 +12,33 @@ namespace ATS_1.Controllers
     public class IndexController : ControllerBase
     {
         // GET: api/Index
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpGet(Name = "GetIndex")]
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            return Ok();
         }
 
         // GET: api/Index/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "GetAllIndex")]
         public string Get(int id)
         {
             return "value";
         }
 
         // POST: api/Index
-        [HttpPost]
+        [HttpPost(Name = "PostIndex")]
         public void Post([FromBody] string value)
         {
         }
 
         // PUT: api/Index/5
-        [HttpPut("{id}")]
+        [HttpPut("{id}", Name = "PutIndex")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
         // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}", Name = "DeleteIndex")]
         public void Delete(int id)
         {
         }

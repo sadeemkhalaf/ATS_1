@@ -13,9 +13,9 @@ namespace ATS_1.Controllers
     {
         // GET: api/Metadata
         [HttpGet(Name = "GetAllMetadata")]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            return Ok();
         }
 
         // GET: api/Metadata/5
