@@ -1,24 +1,20 @@
 ﻿using ATS_1.Data;
 using ATS_1.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ATS_1.Services.MetadataServices
+namespace ATS_1.Services
 {
-    public class MetadataServices : IMetadataServices
+    public class MetadataService : IMetadataService
     {
         private readonly ApplicationDBContext dbContext;
 
-        public MetadataServices(ApplicationDBContext _dbContext)
+        public MetadataService(ApplicationDBContext _dbContext)
         {
             dbContext = _dbContext;
-        }
-
-        public void DeleteMetadata(int id)
-        {
-            throw new NotImplementedException();
         }
 
         public List<Metadata> GetAllMetadata()
@@ -31,17 +27,19 @@ namespace ATS_1.Services.MetadataServices
 
         public Metadata GetMetadata(int ID)
         {
-            throw new NotImplementedException();
+            using (dbContext) {
+                return dbContext.Metadata.Find(ID);
+            }
         }
 
         public void InsertMetadata(Metadata metadata)
         {
-            throw new NotImplementedException();
+            using (dbContext)
+            {
+                dbContext.Entry<Metadata>(metadata).State = EntityState.Added;
+                dbContext.SaveChanges();
+            }
         }
 
-        public void UpdateMetadata(Metadata metadata, int id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

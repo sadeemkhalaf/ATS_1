@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ATS_1.Services
 {
-    interface IMetadataServices
+    public interface IMetadataService
     {
 
         List<Metadata> GetAllMetadata();
@@ -15,9 +15,6 @@ namespace ATS_1.Services
         // getByID
         void InsertMetadata(Metadata metadata);
         // insert(obj)
-        void UpdateMetadata(Metadata metadata, int id);
-        // update (obj, id)
-        void DeleteMetadata(int id);
-        // delete (id)
+
     }
 }

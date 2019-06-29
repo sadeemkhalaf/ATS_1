@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ATS_1.Services
 {
-    interface IIndexServices
+    interface IIndexService
     {
         List<Index> GetAllIndex();
         // getAll

@@ -18,15 +18,18 @@ namespace ATS_1.Controllers
             _applicantService = applicantService;
         }
         // GET api/applicants
+        [Route("")]
+        [Route("applicants")]
+        [Route("applicants/Index")]
         [HttpGet(Name = "GetApplicants")]
-        public IActionResult Get()
+        public IActionResult GetApplicants()
         {
             return Ok(_applicantService.GetApplicants());
         }
 
         // GET api/applicants/5
         [HttpGet("{id}", Name = "GetApplicant")]
-        public ActionResult Get(int id)
+        public ActionResult GetApplicant(int id)
         {
             return Ok(_applicantService.GetApplicant(id));
         }
@@ -39,14 +42,14 @@ namespace ATS_1.Controllers
 
         // PUT api/applicants/5
         [HttpPut("{id}", Name = "PutApplicant")]
-        public void Put(int id, [FromBody] Applicant applicant)
+        public void UpdateApplicant(int id, [FromBody] Applicant applicant)
         {
             _applicantService.UpdateApplicant(applicant, id);
         }
 
         // DELETE api/applicants/5
         [HttpDelete("{id}", Name ="DeleteApplicant")]
-        public void Delete(int id)
+        public void DeleteApplicant(int id)
         {
             _applicantService.DeleteApplicant(id);
         }

@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ATS_1.Services.IndexServices
+namespace ATS_1.Services
 {
-    public class IndexServices : IIndexServices
+    public class IndexService : IIndexService
     {
         private ApplicationDBContext dbContext;
 
-        public IndexServices(ApplicationDBContext _dbContext)
+        public IndexService(ApplicationDBContext _dbContext)
         {
             dbContext = _dbContext;
         }
