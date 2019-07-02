@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ATS_1.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,36 +10,41 @@ namespace ATS_1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class IndexController : ControllerBase
+    public class InboxController : ControllerBase
     {
-        // GET: api/Index
-        [HttpGet(Name = "GetIndex")]
+        private readonly IInboxService inboxService;
+
+        public InboxController(IInboxService _inboxService) {
+            inboxService = _inboxService;
+        }
+        // GET: api/Inbox
+        [HttpGet(Name = "GetAllInbox")]
         public IActionResult Get()
         {
-            return Ok();
+            return Ok(this.inboxService.GetAllInbox());
         }
 
-        // GET: api/Index/5
-        [HttpGet("{id}", Name = "GetAllIndex")]
+        // GET: api/Inbox/5
+        [HttpGet("{id}", Name = "GetInbox")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST: api/Index
-        [HttpPost(Name = "PostIndex")]
+        // POST: api/Inbox
+        [HttpPost(Name = "PostInbox")]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT: api/Index/5
-        [HttpPut("{id}", Name = "PutIndex")]
+        // PUT: api/Inbox/5
+        [HttpPut("{id}", Name = "PutInbox")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
         // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}", Name = "DeleteIndex")]
+        [HttpDelete("{id}", Name = "DeleteInbox")]
         public void Delete(int id)
         {
         }

@@ -7,35 +7,41 @@ using System.Threading.Tasks;
 
 namespace ATS_1.Services
 {
-    public class IndexService : IIndexService
+    public class InboxService : IInboxService
     {
         private ApplicationDBContext dbContext;
 
-        public IndexService(ApplicationDBContext _dbContext)
+        public InboxService(ApplicationDBContext _dbContext)
         {
             dbContext = _dbContext;
         }
-        public void DeleteIndex(int id)
+        public void DeleteInbox(int id)
         {
             throw new NotImplementedException();
         }
 
-        public List<Index> GetAllIndex()
+        public List<Inbox> GetAllInbox()
+        {
+            using (dbContext) {
+                if (dbContext.Inbox.ToList().Count > 0) {
+                    return dbContext.Inbox.ToList();
+                } else {
+                    throw new NotImplementedException();
+                }
+            } 
+        }
+
+        public Inbox GetInbox(int ID)
         {
             throw new NotImplementedException();
         }
 
-        public Index GetIndex(int ID)
+        public void InsertInbox(Inbox inbox)
         {
             throw new NotImplementedException();
         }
 
-        public void InsertIndex(Index index)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateIndex(Index index, int id)
+        public void UpdateInbox(Inbox inbox, int id)
         {
             throw new NotImplementedException();
         }

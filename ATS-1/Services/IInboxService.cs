@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace ATS_1.Services
 {
-    interface IIndexService
+    public interface IInboxService
     {
-        List<Index> GetAllIndex();
+        List<Inbox> GetAllInbox();
         // getAll
-        Index GetIndex(int ID);
+        Inbox GetInbox(int ID);
         // getByID
-        void InsertIndex(Index index);
+        void InsertInbox(Inbox inbox);
         // insert(obj)
-        void UpdateIndex(Index index, int id);
+        void UpdateInbox(Inbox inbox, int id);
         // update (obj, id)
-        void DeleteIndex(int id);
+        void DeleteInbox(int id);
         // delete (id)
     }
 }
