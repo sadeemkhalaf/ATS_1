@@ -13,7 +13,7 @@ namespace ATS_1.Data
         public ApplicationDBContext () { }
         public DbSet<Applicant> Applicants { set; get; }
         public DbSet<Metadata> Metadata { set; get; }
-        public DbSet<Index> Index { set; get; }
+        public DbSet<Inbox> Inbox { set; get; }
 
     }
 }

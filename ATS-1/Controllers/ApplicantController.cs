@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ATS_1.Services;
 using Microsoft.AspNetCore.Mvc;
 using ATS_1.Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace ATS_1.Controllers
 {
@@ -18,10 +19,11 @@ namespace ATS_1.Controllers
             _applicantService = applicantService;
         }
         // GET api/applicants
+
+        [EnableCors("myAllowedOrigins")]
         [Route("")]
         [Route("applicants")]
-        [Route("applicants/Index")]
-        [HttpGet(Name = "GetApplicants")]
+        [HttpGet]
         public IActionResult GetApplicants()
         {
             return Ok(_applicantService.GetApplicants());

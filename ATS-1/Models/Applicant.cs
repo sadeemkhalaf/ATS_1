@@ -18,8 +18,8 @@ namespace ATS_1.Models
         public string University { set; get; }
         public string OtherUniversity { set; get; }
         public string Major { set; get; }
-        public string GPA1 { set; get; }
-        public string GPA2 { set; get; }
+        public double GPA1 { set; get; }
+        public double GPA2 { set; get; }
         public string Devexperience { set; get; }
         public string TeamLeaderExperience { set; get; }
         public string Technologies { set; get; }
@@ -27,7 +27,7 @@ namespace ATS_1.Models
         public string Howdidyoufindus { set; get; }
         public string NoteLog { set; get; }
         public string Degree { set; get; }
-        public string ExpectedSalary { set; get; }
+        public int ExpectedSalary { set; get; }
 
         public string EnglishSkills { set; get; }
         public string CareerLevel { set; get; }
