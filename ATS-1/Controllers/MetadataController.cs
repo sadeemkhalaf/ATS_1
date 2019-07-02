@@ -28,31 +28,14 @@ namespace ATS_1.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Metadata>> GetMetadata(int id)
         {
-            var metadata = _metadataService.GetMetadata(id);
-
-            if (metadata == null)
-            {
-                return NotFound();
-            }
-
-            return metadata;
+            return Ok(this._metadataService.GetMetadata(id));
         }
 
         // POST: api/Metadatas
         [HttpPost]
-        public async Task<ActionResult<Metadata>> PostMetadata(Metadata metadata)
+        public void PostMetadata(Metadata metadata)
         {
-            //_context.Metadata.Add(metadata);
-            //  await _context.SaveChangesAsync();
-
-            //return CreatedAtAction("GetMetadata", new { id = metadata.Id }, metadata);
-            return null;
-        }
-
-        private bool MetadataExists(int id)
-        {
-            //return _context.Metadata.Any(e => e.Id == id);
-            return false;
+            this._metadataService.InsertMetadata(metadata);
         }
     }
 }

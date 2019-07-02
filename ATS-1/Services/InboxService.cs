@@ -11,6 +11,7 @@ namespace ATS_1.Services
     public class InboxService : IInboxService
     {
         private ApplicationDBContext dbContext;
+        private Random Random = new Random();
 
         public InboxService(ApplicationDBContext _dbContext)
         {
@@ -33,7 +34,7 @@ namespace ATS_1.Services
         {
             using (dbContext)
             {
-                if (dbContext.Inbox.ToList().Count > 0)
+                if (dbContext.Inbox.ToList().Count >= 0)
                 {
                     return dbContext.Inbox.ToList();
                 }
@@ -48,23 +49,15 @@ namespace ATS_1.Services
         {
             using (dbContext)
             {
-                Inbox InboxedApplicant = dbContext.Inbox.Find(id);
-                if (InboxedApplicant != null)
-                {
-                    return InboxedApplicant;
-                }
-                else
-                {
-                    throw new NullReferenceException();
-                }
+                return dbContext.Inbox.Find(id);
             }
         }
 
         public void InsertInbox(Inbox InboxedApplicant) {
             using (dbContext)
             {
-                InboxedApplicant.Id = Convert.ToInt32(new DateTime());
                 dbContext.Entry<Inbox>(InboxedApplicant).State = EntityState.Added;
+                dbContext.SaveChanges();
             }
     }
 }

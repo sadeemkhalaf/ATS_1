@@ -18,15 +18,15 @@ namespace ATS_1.Models
         public string ApplicantUniversity { set; get; }
         public string ApplicantOtherUniversity { set; get; }
         public string ApplicantMajor { set; get; }
-        public string ApplicantGPA1 { set; get; }
-        public string ApplicantGPA2 { set; get; }
+        public double ApplicantGPA1 { set; get; }
+        public double ApplicantGPA2 { set; get; }
         public string ApplicantDevExperience { set; get; }
         public string ApplicantTeamLeaderExperience { set; get; }
         public string ApplicantTechnologies { set; get; }
         public string ApplicantCurrentPosition { set; get; }
         public string ApplicantHowdidyoufindus { set; get; }
         public string ApplicantDegree { set; get; }
-        public string ApplicantExpectedSalary { set; get; }
+        public int ApplicantExpectedSalary { set; get; }
 
         public string englishSkills { set; get; }
         public string nationality { set; get; }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ATS_1.Models;
 using ATS_1.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,8 @@ namespace ATS_1.Controllers
     {
         private readonly IInboxService inboxService;
 
-        public InboxController(IInboxService _inboxService) {
+        public InboxController(IInboxService _inboxService)
+        {
             inboxService = _inboxService;
         }
         // GET: api/Inbox
@@ -24,29 +26,24 @@ namespace ATS_1.Controllers
             return Ok(this.inboxService.GetAllInbox());
         }
 
-        // GET: api/Inbox/5
         [HttpGet("{id}", Name = "GetInbox")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            return Ok(this.inboxService.GetInbox(id));
         }
 
         // POST: api/Inbox
         [HttpPost(Name = "PostInbox")]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Inbox InboxedApplicant)
         {
-        }
-
-        // PUT: api/Inbox/5
-        [HttpPut("{id}", Name = "PutInbox")]
-        public void Put(int id, [FromBody] string value)
-        {
+            this.inboxService.InsertInbox(InboxedApplicant);
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}", Name = "DeleteInbox")]
         public void Delete(int id)
         {
+            this.inboxService.DeleteInbox(id);
         }
     }
 }

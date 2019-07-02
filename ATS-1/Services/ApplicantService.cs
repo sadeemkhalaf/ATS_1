@@ -9,7 +9,7 @@ namespace ATS_1.Services
     public class ApplicantService : IApplicantService
     {
         private ApplicationDBContext dbContext;
-        private Random random = new Random();
+        private Random Random = new Random();
 
         public ApplicantService(ApplicationDBContext _dbContext)
         {
@@ -21,7 +21,8 @@ namespace ATS_1.Services
             using (dbContext)
             {
                 var applicant = dbContext.Applicants.Find(id);
-                if (applicant != null) {
+                if (applicant != null)
+                {
                     dbContext.Entry<Applicant>(applicant).State = EntityState.Deleted;
                     dbContext.SaveChanges();
                 }
@@ -30,7 +31,8 @@ namespace ATS_1.Services
 
         public Applicant GetApplicant(int ID)
         {
-            using (dbContext) {
+            using (dbContext)
+            {
                 return dbContext.Applicants.Find(ID);
             }
         }
@@ -60,10 +62,17 @@ namespace ATS_1.Services
             {
                 applicantFound = dbContext.Applicants.Where(appl => appl.Id == id).FirstOrDefault<Applicant>();
 
-            if (applicantFound != null) {
-                    if (!applicantFound.status.Equals(applicant.status)) {
+                if (applicantFound != null)
+                {
+                    if (!applicantFound.status.Equals(applicant.status))
+                    {
                         Metadata metadata = new Metadata();
-                        metadata.Id = Convert.ToInt32(new DateTime());
+                        int random = this.Random.Next();
+                        while (dbContext.Metadata.Find(random) != null)
+                        {
+                            random = this.Random.Next();
+                        }
+                        metadata.Id = random;
                         metadata.Activity = "status changed to " + applicant.status;
                         metadata.userName = "admin";
                         metadata.ActivityDatetime = DateTime.Now;
@@ -93,6 +102,7 @@ namespace ATS_1.Services
                     applicantFound.InterviewDate = applicant.InterviewDate;
                     applicantFound.CareerLevel = applicant.CareerLevel;
                     applicantFound.LastUdateLog = applicant.LastUdateLog;
+                    applicantFound.ExamScore = applicant.ExamScore;
                     dbContext.Entry<Applicant>(applicantFound).State = EntityState.Modified;
                 }
                 dbContext.SaveChanges();
