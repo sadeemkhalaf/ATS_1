@@ -18,6 +18,8 @@ namespace ATS_1
 {
     public class Startup
     {
+
+        readonly string allowedOrigins = "myAllowedOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -25,14 +27,18 @@ namespace ATS_1
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => {
+                options.AddPolicy(allowedOrigins, builder => {
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+                });
+            });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<ApplicationDBContext>(x => x.UseSqlServer(Configuration.GetConnectionString("ATSContext")), ServiceLifetime.Transient);
             services.AddTransient<IApplicantService, ApplicantService>();
-            services.AddScoped<IMetadataService, MetadataService>();
-            services.AddScoped<IIndexService, IndexService>();
+            services.AddTransient<IMetadataService, MetadataService>();
+            services.AddTransient<IInboxService, InboxService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +55,7 @@ namespace ATS_1
             }
 
             app.UseHttpsRedirection();
+            app.UseCors(allowedOrigins);
             app.UseMvc();
         }
     }
