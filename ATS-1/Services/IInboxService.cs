@@ -14,8 +14,6 @@ namespace ATS_1.Services
         // getByID
         void InsertInbox(Inbox inbox);
         // insert(obj)
-        void UpdateInbox(Inbox inbox, int id);
-        // update (obj, id)
         void DeleteInbox(int id);
         // delete (id)
     }

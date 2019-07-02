@@ -59,17 +59,15 @@ namespace ATS_1.Services
             using (dbContext)
             {
                 applicantFound = dbContext.Applicants.Where(appl => appl.Id == id).FirstOrDefault<Applicant>();
-            
-            // the entity is updated in a disconnected context
+
             if (applicantFound != null) {
                     if (!applicantFound.status.Equals(applicant.status)) {
                         Metadata metadata = new Metadata();
-                        metadata.Id = this.random.Next();
-                        metadata.Activity = "status changed";
+                        metadata.Id = Convert.ToInt32(new DateTime());
+                        metadata.Activity = "status changed to " + applicant.status;
                         metadata.userName = "admin";
                         metadata.ActivityDatetime = DateTime.Now;
                         metadata.ApplicantID = applicantFound.Id;
-                        //dbContext.Metadata.Add(metadata);
                         dbContext.Entry<Metadata>(metadata).State = EntityState.Added;
                     }
                     applicantFound.Name = applicant.Name;
@@ -89,14 +87,15 @@ namespace ATS_1.Services
                     applicantFound.ExpectedSalary = applicant.ExpectedSalary;
                     applicantFound.Howdidyoufindus = applicant.Howdidyoufindus;
                     applicantFound.NoteLog = applicant.NoteLog;
-
-                    // mark as modified
+                    applicantFound.EnglishSkills = applicant.EnglishSkills;
+                    applicantFound.Nationality = applicant.Nationality;
+                    applicantFound.ToCallDate = applicant.ToCallDate;
+                    applicantFound.InterviewDate = applicant.InterviewDate;
+                    applicantFound.CareerLevel = applicant.CareerLevel;
+                    applicantFound.LastUdateLog = applicant.LastUdateLog;
                     dbContext.Entry<Applicant>(applicantFound).State = EntityState.Modified;
                 }
-
-                // save changes
                 dbContext.SaveChanges();
-            
             }
         }
     }

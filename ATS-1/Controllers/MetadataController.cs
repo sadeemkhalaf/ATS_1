@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ATS_1.Data;
 using ATS_1.Models;
 using ATS_1.Services;
 
@@ -13,11 +8,11 @@ namespace ATS_1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MetadatasController : ControllerBase
+    public class MetadataController : ControllerBase
     {
         private readonly IMetadataService _metadataService;
 
-        public MetadatasController(IMetadataService metadataService)
+        public MetadataController(IMetadataService metadataService)
         {
             _metadataService = metadataService;
         }

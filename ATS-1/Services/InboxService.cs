@@ -1,9 +1,10 @@
 ﻿using ATS_1.Data;
 using ATS_1.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace ATS_1.Services
 {
@@ -17,33 +18,54 @@ namespace ATS_1.Services
         }
         public void DeleteInbox(int id)
         {
-            throw new NotImplementedException();
+            using (dbContext)
+            {
+                Inbox InboxedApplicant = dbContext.Inbox.Find(id);
+                if (InboxedApplicant != null)
+                {
+                    dbContext.Entry<Inbox>(InboxedApplicant).State = EntityState.Deleted;
+                    dbContext.SaveChanges();
+                }
+            }
         }
 
         public List<Inbox> GetAllInbox()
         {
-            using (dbContext) {
-                if (dbContext.Inbox.ToList().Count > 0) {
+            using (dbContext)
+            {
+                if (dbContext.Inbox.ToList().Count > 0)
+                {
                     return dbContext.Inbox.ToList();
-                } else {
-                    throw new NotImplementedException();
                 }
-            } 
+                else
+                {
+                    throw new NullReferenceException();
+                }
+            }
         }
 
-        public Inbox GetInbox(int ID)
+        public Inbox GetInbox(int id)
         {
-            throw new NotImplementedException();
+            using (dbContext)
+            {
+                Inbox InboxedApplicant = dbContext.Inbox.Find(id);
+                if (InboxedApplicant != null)
+                {
+                    return InboxedApplicant;
+                }
+                else
+                {
+                    throw new NullReferenceException();
+                }
+            }
         }
 
-        public void InsertInbox(Inbox inbox)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateInbox(Inbox inbox, int id)
-        {
-            throw new NotImplementedException();
-        }
+        public void InsertInbox(Inbox InboxedApplicant) {
+            using (dbContext)
+            {
+                InboxedApplicant.Id = Convert.ToInt32(new DateTime());
+                dbContext.Entry<Inbox>(InboxedApplicant).State = EntityState.Added;
+            }
     }
+}
 }
