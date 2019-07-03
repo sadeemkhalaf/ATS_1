@@ -17,25 +17,28 @@ namespace ATS_1.Controllers
             _metadataService = metadataService;
         }
 
-        // GET: api/Metadatas
         [HttpGet]
         public IActionResult GetMetadata()
         {
             return Ok(_metadataService.GetAllMetadata().ToList());
         }
 
-        // GET: api/Metadatas/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Metadata>> GetMetadata(int id)
         {
             return Ok(this._metadataService.GetMetadata(id));
         }
 
-        // POST: api/Metadatas
         [HttpPost]
         public void PostMetadata(Metadata metadata)
         {
             this._metadataService.InsertMetadata(metadata);
+        }
+
+        [HttpDelete("{id}", Name = "DeleteMetadata")]
+        public void DelteMetadata(int id)
+        {
+            this._metadataService.DeleteMetadata(id);
         }
     }
 }

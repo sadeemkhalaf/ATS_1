@@ -41,5 +41,13 @@ namespace ATS_1.Services
             }
         }
 
+        public void DeleteMetadata(int ID) {
+            using (dbContext) {
+                Metadata metadata = dbContext.Metadata.Find(ID);
+                dbContext.Entry<Metadata>(metadata).State = EntityState.Deleted;
+                dbContext.SaveChanges();
+            }
+        }
+
     }
 }

@@ -16,5 +16,8 @@ namespace ATS_1.Services
         void InsertMetadata(Metadata metadata);
         // insert(obj)
 
+        void DeleteMetadata(int ID);
+        // insert(obj)
+
     }
 }
