@@ -10,27 +10,27 @@ namespace ATS_1.Models
     {
         [Key]
         public int Id { set; get; }
-        public string ApplicantMobile { set; get; }
-        public string ApplicantName { set; get; }
-        public string ApplicantEmail { set; get; }
-        public string ApplicantStatus { set; get; } // by default is "Inbox"
-        public string ApplicantJoinDate { set; get; }
-        public string ApplicantUniversity { set; get; }
-        public string ApplicantOtherUniversity { set; get; }
-        public string ApplicantMajor { set; get; }
-        public double ApplicantGPA1 { set; get; }
-        public double ApplicantGPA2 { set; get; }
-        public string ApplicantDevExperience { set; get; }
-        public string ApplicantTeamLeaderExperience { set; get; }
-        public string ApplicantTechnologies { set; get; }
-        public string ApplicantCurrentPosition { set; get; }
-        public string ApplicantHowdidyoufindus { set; get; }
-        public string ApplicantDegree { set; get; }
-        public int ApplicantExpectedSalary { set; get; }
+        public string PhoneNumber { set; get; }
+        public string Name { set; get; }
+        public string Email { set; get; }
+        public string Status { set; get; } // by default is "Inbox"
+        public string JoinDate { set; get; }
+        public string University { set; get; }
+        public string OtherUniversity { set; get; }
+        public string Major { set; get; }
+        public double GPA1 { set; get; }
+        public double GPA2 { set; get; }
+        public string DevExperience { set; get; }
+        public string TeamLeaderExperience { set; get; }
+        public string Technologies { set; get; }
+        public string CurrentPosition { set; get; }
+        public string HowDidYouFindUs { set; get; }
+        public string Degree { set; get; }
+        public int ExpectedSalary { set; get; }
 
-        public string englishSkills { set; get; }
-        public string nationality { set; get; }
-        public string cvAttachment { set; get; }
-        public string ApplicationTitle { set; get; }
+        public string EnglishSkills { set; get; }
+        public string Nationality { set; get; }
+        public string CVAttachment { set; get; }
+        public string Title { set; get; }
     }
 }

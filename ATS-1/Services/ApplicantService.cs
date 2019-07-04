@@ -9,7 +9,6 @@ namespace ATS_1.Services
     public class ApplicantService : IApplicantService
     {
         private ApplicationDBContext dbContext;
-        private Random Random = new Random();
 
         public ApplicantService(ApplicationDBContext _dbContext)
         {
@@ -64,23 +63,17 @@ namespace ATS_1.Services
 
                 if (applicantFound != null)
                 {
-                    if (!applicantFound.status.Equals(applicant.status))
+                    if (!applicantFound.Status.Equals(applicant.Status))
                     {
                         Metadata metadata = new Metadata();
-                        int random = this.Random.Next();
-                        while (dbContext.Metadata.Find(random) != null)
-                        {
-                            random = this.Random.Next();
-                        }
-                        metadata.Id = random;
-                        metadata.Activity = "status changed to " + applicant.status;
+                        metadata.Activity = "Status changed to " + applicant.Status;
                         metadata.userName = "admin";
                         metadata.ActivityDatetime = DateTime.Now;
                         metadata.ApplicantID = applicantFound.Id;
                         dbContext.Entry<Metadata>(metadata).State = EntityState.Added;
                     }
                     applicantFound.Name = applicant.Name;
-                    applicantFound.status = applicant.status;
+                    applicantFound.Status = applicant.Status;
                     applicantFound.PhoneNumber = applicant.PhoneNumber;
                     applicantFound.Email = applicant.Email;
                     applicantFound.Degree = applicant.Degree;
@@ -95,7 +88,7 @@ namespace ATS_1.Services
                     applicantFound.JoinDate = applicant.JoinDate;
                     applicantFound.ExpectedSalary = applicant.ExpectedSalary;
                     applicantFound.Howdidyoufindus = applicant.Howdidyoufindus;
-                    applicantFound.NoteLog = applicant.NoteLog;
+                    applicantFound.Notes = applicant.Notes;
                     applicantFound.EnglishSkills = applicant.EnglishSkills;
                     applicantFound.Nationality = applicant.Nationality;
                     applicantFound.ToCallDate = applicant.ToCallDate;

@@ -13,7 +13,7 @@ namespace ATS_1.Models
         public string PhoneNumber { set; get; }
         public string Name { set; get; }
         public string Email { set; get; }
-        public string status { set; get; }
+        public string Status { set; get; }
         public string JoinDate { set; get; }
         public string University { set; get; }
         public string OtherUniversity { set; get; }
@@ -25,7 +25,7 @@ namespace ATS_1.Models
         public string Technologies { set; get; }
         public string Currentposition { set; get; }
         public string Howdidyoufindus { set; get; }
-        public string NoteLog { set; get; }
+        public string Notes { set; get; }
         public string Degree { set; get; }
         public int ExpectedSalary { set; get; }
 

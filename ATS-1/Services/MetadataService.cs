@@ -36,6 +36,7 @@ namespace ATS_1.Services
         {
             using (dbContext)
             {
+                metadata.ActivityDatetime = DateTime.Now;
                 dbContext.Entry<Metadata>(metadata).State = EntityState.Added;
                 dbContext.SaveChanges();
             }
