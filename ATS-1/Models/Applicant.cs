@@ -32,11 +32,12 @@ namespace ATS_1.Models
         public string EnglishSkills { set; get; }
         public string CareerLevel { set; get; }
         public string LastUdateLog { set; get; }
-        public string ExamScore { set; get; }
+        public double ExamScore { set; get; }
         public DateTime ToCallDate { set; get; }
         public DateTime InterviewDate { set; get; }
         public string Nationality { set; get; }
         public string CVAttachment { set; get; }
+        public string Title { set; get; }
 
     }
 }

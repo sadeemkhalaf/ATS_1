@@ -96,6 +96,7 @@ namespace ATS_1.Services
                     applicantFound.CareerLevel = applicant.CareerLevel;
                     applicantFound.LastUdateLog = applicant.LastUdateLog;
                     applicantFound.ExamScore = applicant.ExamScore;
+                    applicantFound.Title = applicant.Title;
                     dbContext.Entry<Applicant>(applicantFound).State = EntityState.Modified;
                 }
                 dbContext.SaveChanges();

@@ -37,12 +37,15 @@ namespace ATS_1.Controllers
         }
 
         // POST api/applicants
+        [EnableCors("myAllowedOrigins")]
         [HttpPost(Name = "PostApplicant")]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Applicant applicant)
         {
+            _applicantService.InsertApplicant(applicant);
         }
 
         // PUT api/applicants/5
+        [EnableCors("myAllowedOrigins")]
         [HttpPut("{id}", Name = "PutApplicant")]
         public void UpdateApplicant(int id, [FromBody] Applicant applicant)
         {
@@ -50,6 +53,7 @@ namespace ATS_1.Controllers
         }
 
         // DELETE api/applicants/5
+        [EnableCors("myAllowedOrigins")]
         [HttpDelete("{id}", Name ="DeleteApplicant")]
         public void DeleteApplicant(int id)
         {
