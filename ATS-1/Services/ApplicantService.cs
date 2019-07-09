@@ -65,12 +65,12 @@ namespace ATS_1.Services
                 {
                     if (!applicantFound.Status.Equals(applicant.Status))
                     {
-                        Metadata metadata = new Metadata();
-                        metadata.Activity = "Status changed to " + applicant.Status;
-                        metadata.userName = "admin";
-                        metadata.ActivityDatetime = DateTime.Now;
-                        metadata.ApplicantID = applicantFound.Id;
-                        dbContext.Entry<Metadata>(metadata).State = EntityState.Added;
+                        ActivityLog ActivityLog = new ActivityLog();
+                        ActivityLog.Activity = "Status changed to " + applicant.Status;
+                        ActivityLog.UserName = "admin";
+                        ActivityLog.ActivityDatetime = DateTime.Now;
+                        ActivityLog.ApplicantID = applicantFound.Id;
+                        dbContext.Entry<ActivityLog>(ActivityLog).State = EntityState.Added;
                     }
                     applicantFound.Name = applicant.Name;
                     applicantFound.Status = applicant.Status;
@@ -88,14 +88,20 @@ namespace ATS_1.Services
                     applicantFound.JoinDate = applicant.JoinDate;
                     applicantFound.ExpectedSalary = applicant.ExpectedSalary;
                     applicantFound.Howdidyoufindus = applicant.Howdidyoufindus;
-                    applicantFound.Notes = applicant.Notes;
+                    applicantFound.Notes = applicant.Notes.Length > 0 ? applicant.Notes : "";
                     applicantFound.EnglishSkills = applicant.EnglishSkills;
                     applicantFound.Nationality = applicant.Nationality;
-                    applicantFound.ToCallDate = applicant.ToCallDate;
-                    applicantFound.InterviewDate = applicant.InterviewDate;
+                    if (applicant.ToCallDate != null)
+                    {
+                        applicantFound.ToCallDate = applicant.ToCallDate;
+                    }
+                    if (applicant.InterviewDate != null)
+                    {
+                        applicantFound.InterviewDate = applicant.InterviewDate;
+                    }
                     applicantFound.CareerLevel = applicant.CareerLevel;
                     applicantFound.LastUdateLog = applicant.LastUdateLog;
-                    applicantFound.ExamScore = applicant.ExamScore;
+                    applicantFound.ExamScore = applicant.ExamScore != 0 ? applicant.ExamScore : 0;
                     applicantFound.Title = applicant.Title;
                     dbContext.Entry<Applicant>(applicantFound).State = EntityState.Modified;
                 }

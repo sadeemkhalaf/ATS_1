@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace ATS_1.Models
 {
-    public class Metadata
+    public class ActivityLog
     {
         [Key]
         public int Id { get; set; }
         [ForeignKey("Id")]
         public int ApplicantID { get; set; }
-        public string userName { set; get; }
+        public string UserName { set; get; }
         public string Activity { set; get; }
         public DateTime ActivityDatetime { set; get; }
     }

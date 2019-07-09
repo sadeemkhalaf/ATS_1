@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace ATS_1.Services
 {
-    public interface IMetadataService
+    public interface IActivityLogService
     {
 
-        List<Metadata> GetAllMetadata();
+        List<ActivityLog> GetAllActivityLog();
         // getAll
-        Metadata GetMetadata(int ID);
+        ActivityLog GetActivityLog(int ID);
         // getByID
-        void InsertMetadata(Metadata metadata);
+        void InsertLog(ActivityLog ActivityLog);
         // insert(obj)
 
-        void DeleteMetadata(int ID);
+        void DeleteActivityLog(int ID);
         // insert(obj)
 
     }

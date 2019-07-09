@@ -18,10 +18,10 @@ namespace ATS_1.Models
         public string University { set; get; }
         public string OtherUniversity { set; get; }
         public string Major { set; get; }
-        public double GPA1 { set; get; }
-        public double GPA2 { set; get; }
-        public string Devexperience { set; get; }
-        public string TeamLeaderExperience { set; get; }
+        public Nullable<double> GPA1 { set; get; }
+        public Nullable<double> GPA2 { set; get; }
+        public Nullable<int> Devexperience { set; get; }
+        public Nullable<int> TeamLeaderExperience { set; get; }
         public string Technologies { set; get; }
         public string Currentposition { set; get; }
         public string Howdidyoufindus { set; get; }
@@ -32,12 +32,12 @@ namespace ATS_1.Models
         public string EnglishSkills { set; get; }
         public string CareerLevel { set; get; }
         public string LastUdateLog { set; get; }
-        public double ExamScore { set; get; }
-        public DateTime ToCallDate { set; get; }
-        public DateTime InterviewDate { set; get; }
+        public Nullable<double> ExamScore { set; get; }
+        public Nullable<DateTime> ToCallDate { set; get; }
+        public Nullable<DateTime> InterviewDate { set; get; }
         public string Nationality { set; get; }
         public string CVAttachment { set; get; }
-        public string Title { set; get; }
+        public string Title { set; get; } // get from a dictionary (frontend issue)
 
     }
 }

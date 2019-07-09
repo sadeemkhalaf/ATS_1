@@ -1,9 +1,5 @@
 ﻿using ATS_1.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ATS_1.Data
 {
@@ -12,8 +8,9 @@ namespace ATS_1.Data
         public ApplicationDBContext(DbContextOptions options) : base(options){ }
         public ApplicationDBContext () { }
         public DbSet<Applicant> Applicants { set; get; }
-        public DbSet<Metadata> Metadata { set; get; }
-        public DbSet<Inbox> Inbox { set; get; }
+        public DbSet<ActivityLog> ActivityLog { set; get; }
+        public DbSet<ApplicantStatusHistory> ApplicantStatusHistory { set; get; }
+        
 
     }
 }
