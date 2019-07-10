@@ -38,6 +38,7 @@ namespace ATS_1.Models
         public string Nationality { set; get; }
         public string CVAttachment { set; get; }
         public string Title { set; get; } // get from a dictionary (frontend issue)
+        public Nullable<DateTime> ApplicationDate { set; get; }
 
     }
 }

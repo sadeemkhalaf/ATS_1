@@ -48,6 +48,7 @@ namespace ATS_1.Services
         {
             using (dbContext)
             {
+                applicant.ApplicationDate = new DateTime().ToUniversalTime();
                 dbContext.Applicants.Add(applicant);
                 dbContext.SaveChanges();
             }
@@ -104,6 +105,7 @@ namespace ATS_1.Services
                     applicantFound.ExamScore = applicant.ExamScore != 0 ? applicant.ExamScore : 0;
                     applicantFound.Title = applicant.Title;
                     dbContext.Entry<Applicant>(applicantFound).State = EntityState.Modified;
+                    applicantFound.ApplicationDate = applicant.ApplicationDate;
                 }
                 dbContext.SaveChanges();
             }
