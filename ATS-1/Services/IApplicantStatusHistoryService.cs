@@ -6,16 +6,11 @@ using System.Threading.Tasks;
 
 namespace ATS_1.Services
 {
-    interface IApplicantStatusHistoryService
+    public interface IApplicantStatusHistoryService
     {
 
-        List<ApplicantStatusHistory> GetAllApplicantStatusHistory();
-        // getAll
-        ApplicantStatusHistory GetApplicantStatusHistory(int ID);
-        // getByID
-        void InsertApplicantStatusHistory(ApplicantStatusHistory ActivityLog);
-        // insert(obj)
-
+        List<ApplicantStatusHistory> GetAllApplicantStatusHistory(int ID);
+        // getAll by applicant Id
         void DeleteApplicantStatusHistory(int ID);
         // insert(obj)
     }

@@ -67,11 +67,16 @@ namespace ATS_1.Services
                     if (!applicantFound.Status.Equals(applicant.Status))
                     {
                         ActivityLog ActivityLog = new ActivityLog();
+                        ApplicantStatusHistory applicantStatusHistory = new ApplicantStatusHistory();
                         ActivityLog.Activity = "Status changed to " + applicant.Status;
                         ActivityLog.UserName = "admin";
                         ActivityLog.ActivityDatetime = DateTime.Now;
                         ActivityLog.ApplicantID = applicantFound.Id;
                         dbContext.Entry<ActivityLog>(ActivityLog).State = EntityState.Added;
+                        applicantStatusHistory.ApplicantId = id;
+                        applicantStatusHistory.Status = applicant.Status;
+                        applicantStatusHistory.UpdateDate = new DateTime();
+                        dbContext.Entry<ApplicantStatusHistory>(applicantStatusHistory).State = EntityState.Added;
                     }
                     applicantFound.Name = applicant.Name;
                     applicantFound.Status = applicant.Status;
