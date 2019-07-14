@@ -33,5 +33,12 @@ namespace ATS_1.Services
                 dbContext.SaveChanges();
             }
         }
+
+        public List<ApplicantStatusHistory> GetAllApplicantStatusHistory()
+        {
+            using (dbContext) {
+                return dbContext.ApplicantStatusHistory.ToList();
+            }
+        }
     }
 }

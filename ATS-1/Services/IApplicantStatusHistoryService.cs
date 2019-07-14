@@ -9,6 +9,7 @@ namespace ATS_1.Services
     public interface IApplicantStatusHistoryService
     {
 
+        List<ApplicantStatusHistory> GetAllApplicantStatusHistory();
         List<ApplicantStatusHistory> GetAllApplicantStatusHistory(int ID);
         // getAll by applicant Id
         void DeleteApplicantStatusHistory(int ID);

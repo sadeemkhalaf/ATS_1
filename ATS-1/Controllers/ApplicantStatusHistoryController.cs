@@ -22,6 +22,15 @@ namespace ATS_1.Controllers
         [EnableCors("myAllowedOrigins")]
         [Route("")]
         [Route("applicants")]
+        [HttpGet]
+        public IActionResult GetAllApplicantsStatusHistories()
+        {
+            return Ok(_applicantStatusHistory.GetAllApplicantStatusHistory());
+        }
+
+        [EnableCors("myAllowedOrigins")]
+        [Route("")]
+        [Route("applicants")]
         [HttpGet ("{id}")]
         public IActionResult GetApplicantsStatusHistories(int id)
         {
