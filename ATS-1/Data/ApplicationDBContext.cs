@@ -10,7 +10,8 @@ namespace ATS_1.Data
         public DbSet<Applicant> Applicants { set; get; }
         public DbSet<ActivityLog> ActivityLog { set; get; }
         public DbSet<ApplicantStatusHistory> ApplicantStatusHistory { set; get; }
-        
+        public DbSet<ApplicantEducationDetails> ApplicantEducationDetails { set; get; }
+        public DbSet<ApplicantFiles> ApplicantFiles { set; get; }
 
     }
 }

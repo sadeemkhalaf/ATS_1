@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace ATS_1.Models
 {
-    public class ActivityLog
+    public class ApplicantFiles
     {
         [Key]
-        public int Id { get; set; }
+        public int Id { set; get; }
+        public string FileName { set; get; }
+        public string URL { set; get; }
+        public Nullable<DateTime> CreatedAt { set; get; }
         [ForeignKey("Applicant")]
         public int ApplicantId { set; get; }
-        public Applicant Applicant { get; set; }
-        public string UserName { set; get; }
-        public string Activity { set; get; }
-        public DateTime ActivityDatetime { set; get; }
+        public Applicant Applicant { set; get; }
     }
 }

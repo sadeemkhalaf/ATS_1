@@ -17,9 +17,10 @@ namespace ATS_1.Services
         public List<ApplicantStatusHistory> GetAllApplicantStatusHistory(int ID)
         {
             using (dbContext) {
-                return dbContext.ApplicantStatusHistory.Where(appl => appl.ApplicantId == ID).ToList<ApplicantStatusHistory>();
-            }
+                    return dbContext.ApplicantStatusHistory.Where(appl => appl.ApplicantId == ID).ToList<ApplicantStatusHistory>();
+                }
         }
+        
 
         public void DeleteApplicantStatusHistory(int ID)
         {

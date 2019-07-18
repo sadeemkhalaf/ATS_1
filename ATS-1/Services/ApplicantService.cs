@@ -48,8 +48,15 @@ namespace ATS_1.Services
         {
             using (dbContext)
             {
-                applicant.ApplicationDate = new DateTime().ToUniversalTime();
+                applicant.ApplicationDate = DateTime.Now.ToString();
                 dbContext.Applicants.Add(applicant);
+                dbContext.SaveChanges();
+                Applicant applicantAdded = dbContext.Applicants.Last<Applicant>();
+                ApplicantStatusHistory applicantStatusHistory = new ApplicantStatusHistory();
+                applicantStatusHistory.ApplicantId = applicantAdded.Id;
+                applicantStatusHistory.Status = applicantAdded.Status;
+                applicantStatusHistory.UpdateDate = new DateTime();
+                dbContext.Entry<ApplicantStatusHistory>(applicantStatusHistory).State = EntityState.Added;
                 dbContext.SaveChanges();
             }
         }
@@ -61,22 +68,24 @@ namespace ATS_1.Services
             using (dbContext)
             {
                 applicantFound = dbContext.Applicants.Where(appl => appl.Id == id).FirstOrDefault<Applicant>();
-
-                if (applicantFound != null)
+                if (applicant != null)
                 {
-                    if (!applicantFound.Status.Equals(applicant.Status))
+                    if (applicantFound.Status != null)
                     {
-                        ActivityLog ActivityLog = new ActivityLog();
-                        ApplicantStatusHistory applicantStatusHistory = new ApplicantStatusHistory();
-                        ActivityLog.Activity = "Status changed to " + applicant.Status;
-                        ActivityLog.UserName = "admin";
-                        ActivityLog.ActivityDatetime = DateTime.Now;
-                        ActivityLog.ApplicantID = applicantFound.Id;
-                        dbContext.Entry<ActivityLog>(ActivityLog).State = EntityState.Added;
-                        applicantStatusHistory.ApplicantId = id;
-                        applicantStatusHistory.Status = applicant.Status;
-                        applicantStatusHistory.UpdateDate = new DateTime();
-                        dbContext.Entry<ApplicantStatusHistory>(applicantStatusHistory).State = EntityState.Added;
+                        if (!applicantFound.Status.Equals(applicant.Status))
+                        {
+                            ActivityLog ActivityLog = new ActivityLog();
+                            ApplicantStatusHistory applicantStatusHistory = new ApplicantStatusHistory();
+                            ActivityLog.Activity = "Status changed to " + applicant.Status;
+                            ActivityLog.UserName = "admin";
+                            ActivityLog.ActivityDatetime = DateTime.Now;
+                            ActivityLog.ApplicantId = applicantFound.Id;
+                            dbContext.Entry<ActivityLog>(ActivityLog).State = EntityState.Added;
+                            applicantStatusHistory.ApplicantId = id;
+                            applicantStatusHistory.Status = applicant.Status;
+                            applicantStatusHistory.UpdateDate = new DateTime();
+                            dbContext.Entry<ApplicantStatusHistory>(applicantStatusHistory).State = EntityState.Added;
+                        }
                     }
                     applicantFound.Name = applicant.Name;
                     applicantFound.Status = applicant.Status;

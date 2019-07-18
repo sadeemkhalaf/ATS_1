@@ -32,6 +32,8 @@ namespace ATS_1
             services.AddTransient<IApplicantService, ApplicantService>();
             services.AddTransient<IActivityLogService, ActivityLogService>();
             services.AddTransient<IApplicantStatusHistoryService, ApplicantStatusHistoryService>();
+            services.AddTransient<IApplicantFilesService, ApplicantFilesService>();
+            services.AddTransient<IApplicantEducationDetailsService, ApplicantEducationDetailsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
