@@ -13,13 +13,14 @@ namespace ATS_1.Controllers
     [ApiController]
     public class ApplicantsController : ControllerBase
     {
+
         private readonly IApplicantService _applicantService;
         public ApplicantsController(IApplicantService applicantService)
         {
             _applicantService = applicantService;
         }
+        
         // GET api/applicants
-
         [EnableCors("myAllowedOrigins")]
         [Route("")]
         [Route("applicants")]
@@ -34,6 +35,19 @@ namespace ATS_1.Controllers
         public ActionResult GetApplicant(int id)
         {
             return Ok(_applicantService.GetApplicant(id));
+        }
+
+        // GET api/applicants/status
+        [HttpGet("count/{status}", Name = "GetStatusCountQueryResult")]
+        public ActionResult GetStatusCountQueryResult(string status)
+        {
+            return Ok(_applicantService.GetStatusCountQueryResult(status));
+        }
+
+        [HttpGet("status/{status}", Name = "GetByStatusQueryResult")]
+        public ActionResult GetByStatusQueryResult(string status)
+        {
+            return Ok(_applicantService.GetApplicantByStatus(status));
         }
 
         // POST api/applicants

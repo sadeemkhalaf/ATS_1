@@ -19,5 +19,9 @@ namespace ATS_1.Services
         void DeleteApplicant(int id);
         // delete (id)
 
+        int GetStatusCountQueryResult(string status);
+
+        List<Applicant> GetApplicantByStatus(string status);
+
     }
 }

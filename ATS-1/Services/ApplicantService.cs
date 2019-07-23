@@ -22,6 +22,13 @@ namespace ATS_1.Services
                 var applicant = dbContext.Applicants.Find(id);
                 if (applicant != null)
                 {
+                    dbContext.ApplicantStatusHistory.ToList().ForEach(appl =>
+                    {
+                        if (appl.ApplicantId == applicant.Id)
+                        {
+                            dbContext.ApplicantStatusHistory.Remove(appl);
+                        }
+                    });
                     dbContext.Entry<Applicant>(applicant).State = EntityState.Deleted;
                     dbContext.SaveChanges();
                 }
@@ -36,11 +43,38 @@ namespace ATS_1.Services
             }
         }
 
+        public List<Applicant> GetApplicantByStatus(string status)
+        {
+            using ( dbContext ) {
+                if (!status.Contains("AllApplicants"))
+                {
+                    return dbContext.Applicants.Where(appl => appl.Status.Contains(status)).ToList();
+                }
+                else {
+                    return dbContext.Applicants.ToList();
+                }
+            }
+        }
+
         public List<Applicant> GetApplicants()
         {
             using (dbContext)
             {
                 return dbContext.Applicants.ToList();
+            }
+        }
+
+        public int GetStatusCountQueryResult(string status)
+        {
+            using (dbContext) {
+                if (!status.Contains("AllApplicants"))
+                {
+                    return dbContext.Applicants.Count(appl => appl.Status.Contains(status));
+                }
+                else {
+                    return dbContext.Applicants.ToList().Count;
+                }
+                
             }
         }
 
