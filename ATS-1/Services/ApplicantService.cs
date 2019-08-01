@@ -6,9 +6,10 @@ using ATS_1.Models;
 using Microsoft.EntityFrameworkCore;
 namespace ATS_1.Services
 {
-    public class ApplicantService : IApplicantService
+    public class ApplicantService : IApplicantService, IDisposable
     {
         private ApplicationDBContext dbContext;
+
 
         public ApplicantService(ApplicationDBContext _dbContext)
         {
@@ -17,146 +18,151 @@ namespace ATS_1.Services
 
         public void DeleteApplicant(int id)
         {
-            using (dbContext)
+
+            var applicant = GetApplicant(id);
+            if (applicant != null)
             {
-                var applicant = dbContext.Applicants.Find(id);
-                if (applicant != null)
-                {
-                    dbContext.ApplicantStatusHistory.ToList().ForEach(appl =>
-                    {
-                        if (appl.ApplicantId == applicant.Id)
-                        {
-                            dbContext.ApplicantStatusHistory.Remove(appl);
-                        }
-                    });
-                    dbContext.Entry<Applicant>(applicant).State = EntityState.Deleted;
-                    dbContext.SaveChanges();
-                }
+                var listToDelete = dbContext.ApplicantStatusHistory.Where(q => q.ApplicantId == applicant.Id).ToList();
+                dbContext.ApplicantStatusHistory.RemoveRange(listToDelete);
+                dbContext.Entry<Applicant>(applicant).State = EntityState.Deleted;
+                dbContext.SaveChanges();
             }
         }
 
         public Applicant GetApplicant(int ID)
         {
-            using (dbContext)
-            {
                 return dbContext.Applicants.Find(ID);
-            }
         }
 
         public List<Applicant> GetApplicantByStatus(string status)
         {
-            using ( dbContext ) {
-                if (!status.Contains("AllApplicants"))
-                {
-                    return dbContext.Applicants.Where(appl => appl.Status.Contains(status)).ToList();
-                }
-                else {
-                    return dbContext.Applicants.ToList();
-                }
-            }
+   
+           return dbContext.Applicants.Where(appl => status.Contains("AllApplicants") ||  appl.Status.Contains(status)).ToList();           
         }
 
         public List<Applicant> GetApplicants()
         {
-            using (dbContext)
-            {
                 return dbContext.Applicants.ToList();
-            }
         }
 
         public int GetStatusCountQueryResult(string status)
         {
-            using (dbContext) {
                 if (!status.Contains("AllApplicants"))
                 {
                     return dbContext.Applicants.Count(appl => appl.Status.Contains(status));
                 }
-                else {
+                else
+                {
                     return dbContext.Applicants.ToList().Count;
                 }
-                
-            }
         }
 
         public void InsertApplicant(Applicant applicant)
         {
-            using (dbContext)
-            {
                 applicant.ApplicationDate = DateTime.Now.ToString();
-                dbContext.Applicants.Add(applicant);
-                dbContext.SaveChanges();
-                Applicant applicantAdded = dbContext.Applicants.Last<Applicant>();
-                ApplicantStatusHistory applicantStatusHistory = new ApplicantStatusHistory();
-                applicantStatusHistory.ApplicantId = applicantAdded.Id;
-                applicantStatusHistory.Status = applicantAdded.Status;
-                applicantStatusHistory.UpdateDate = new DateTime();
-                dbContext.Entry<ApplicantStatusHistory>(applicantStatusHistory).State = EntityState.Added;
-                dbContext.SaveChanges();
-            }
+                Applicant applicantFound = FindSimilarApplicant(applicant.Email, applicant.PhoneNumber);
+                if (applicantFound == null)
+                {
+                    dbContext.Applicants.Add(applicant);
+                    ApplicantStatusHistory applicantStatusHistory = CreateApplicantStatusRecord(applicant);
+                    dbContext.Entry<ApplicantStatusHistory>(applicantStatusHistory).State = EntityState.Added;
+                    dbContext.SaveChanges();
+                }
+                else
+                {
+                    Applicant UpdateApplicant = this.AssignToApplicantObject(applicant, applicantFound);
+                    dbContext.Entry<Applicant>(UpdateApplicant).State = EntityState.Modified;
+                    dbContext.SaveChanges();
+                }
+        }
+
+        private ApplicantStatusHistory CreateApplicantStatusRecord(Applicant applicantAdded)
+        {
+            ApplicantStatusHistory applicantStatusHistory = new ApplicantStatusHistory();
+            applicantStatusHistory.ApplicantId = applicantAdded.Id;
+            applicantStatusHistory.Status = applicantAdded.Status;
+            applicantStatusHistory.UpdateDate = DateTime.Now;
+            return applicantStatusHistory;
+        }
+
+        private Applicant FindSimilarApplicant(string email, string phoneNumber)
+        {
+            return dbContext.Applicants.Where(appl => (appl.Email.Equals(email) ||
+                                                appl.PhoneNumber.Equals(phoneNumber)
+                                            )).FirstOrDefault();
         }
 
         public void UpdateApplicant(Applicant applicant, int id)
         {
-            Applicant applicantFound;
-
-            using (dbContext)
+            Applicant applicantFound;           
+            applicantFound = dbContext.Applicants.Where(appl => appl.Id == id).FirstOrDefault<Applicant>();
+            if (applicant != null)
             {
-                applicantFound = dbContext.Applicants.Where(appl => appl.Id == id).FirstOrDefault<Applicant>();
-                if (applicant != null)
+                if (applicantFound.Status != null)
                 {
-                    if (applicantFound.Status != null)
+                    if (!applicantFound.Status.Equals(applicant.Status))
                     {
-                        if (!applicantFound.Status.Equals(applicant.Status))
-                        {
-                            ActivityLog ActivityLog = new ActivityLog();
-                            ApplicantStatusHistory applicantStatusHistory = new ApplicantStatusHistory();
-                            ActivityLog.Activity = "Status changed to " + applicant.Status;
-                            ActivityLog.UserName = "admin";
-                            ActivityLog.ActivityDatetime = DateTime.Now;
-                            ActivityLog.ApplicantId = applicantFound.Id;
-                            dbContext.Entry<ActivityLog>(ActivityLog).State = EntityState.Added;
-                            applicantStatusHistory.ApplicantId = id;
-                            applicantStatusHistory.Status = applicant.Status;
-                            applicantStatusHistory.UpdateDate = new DateTime();
-                            dbContext.Entry<ApplicantStatusHistory>(applicantStatusHistory).State = EntityState.Added;
-                        }
+                        ActivityLog ActivityLog = new ActivityLog();
+                        ApplicantStatusHistory applicantStatusHistory = new ApplicantStatusHistory();
+                        ActivityLog.Activity = "Status changed to " + applicant.Status;
+                        ActivityLog.UserName = "admin";
+                        ActivityLog.ActivityDatetime = DateTime.Now;
+                        ActivityLog.ApplicantId = applicantFound.Id;
+                        dbContext.Entry<ActivityLog>(ActivityLog).State = EntityState.Added;
+                        applicantStatusHistory.ApplicantId = id;
+                        applicantStatusHistory.Status = applicant.Status;
+                        applicantStatusHistory.UpdateDate = DateTime.Now;
+                        dbContext.Entry<ApplicantStatusHistory>(applicantStatusHistory).State = EntityState.Added;
                     }
-                    applicantFound.Name = applicant.Name;
-                    applicantFound.Status = applicant.Status;
-                    applicantFound.PhoneNumber = applicant.PhoneNumber;
-                    applicantFound.Email = applicant.Email;
-                    applicantFound.Degree = applicant.Degree;
-                    applicantFound.University = applicant.University;
-                    applicantFound.OtherUniversity = applicant.OtherUniversity;
-                    applicantFound.GPA1 = applicant.GPA1;
-                    applicantFound.GPA2 = applicant.GPA2;
-                    applicantFound.Currentposition = applicant.Currentposition;
-                    applicantFound.Technologies = applicant.Technologies;
-                    applicantFound.Devexperience = applicant.Devexperience;
-                    applicantFound.TeamLeaderExperience = applicant.TeamLeaderExperience;
-                    applicantFound.JoinDate = applicant.JoinDate;
-                    applicantFound.ExpectedSalary = applicant.ExpectedSalary;
-                    applicantFound.Howdidyoufindus = applicant.Howdidyoufindus;
-                    applicantFound.Notes = applicant.Notes.Length > 0 ? applicant.Notes : "";
-                    applicantFound.EnglishSkills = applicant.EnglishSkills;
-                    applicantFound.Nationality = applicant.Nationality;
-                    if (applicant.ToCallDate != null)
-                    {
-                        applicantFound.ToCallDate = applicant.ToCallDate;
-                    }
-                    if (applicant.InterviewDate != null)
-                    {
-                        applicantFound.InterviewDate = applicant.InterviewDate;
-                    }
-                    applicantFound.CareerLevel = applicant.CareerLevel;
-                    applicantFound.LastUdateLog = applicant.LastUdateLog;
-                    applicantFound.ExamScore = applicant.ExamScore != 0 ? applicant.ExamScore : 0;
-                    applicantFound.Title = applicant.Title;
-                    dbContext.Entry<Applicant>(applicantFound).State = EntityState.Modified;
-                    applicantFound.ApplicationDate = applicant.ApplicationDate;
                 }
-                dbContext.SaveChanges();
+                Applicant UpdateApplicant = this.AssignToApplicantObject(applicant, applicantFound);
+                dbContext.Entry<Applicant>(UpdateApplicant).State = EntityState.Modified;
             }
+            dbContext.SaveChanges();
+            
+        }
+        private Applicant AssignToApplicantObject(Applicant applicant, Applicant applicantFound)
+        {
+            applicantFound.Name = applicant.Name;
+            applicantFound.Status = applicant.Status;
+            applicantFound.PhoneNumber = applicant.PhoneNumber;
+            applicantFound.Email = applicant.Email;
+            applicantFound.Degree = applicant.Degree;
+            applicantFound.University = applicant.University;
+            applicantFound.OtherUniversity = applicant.OtherUniversity;
+            applicantFound.GPA1 = applicant.GPA1;
+            applicantFound.GPA2 = applicant.GPA2;
+            applicantFound.Currentposition = applicant.Currentposition;
+            applicantFound.Technologies = applicant.Technologies;
+            applicantFound.Devexperience = applicant.Devexperience;
+            applicantFound.TeamLeaderExperience = applicant.TeamLeaderExperience;
+            applicantFound.JoinDate = applicant.JoinDate;
+            applicantFound.ExpectedSalary = applicant.ExpectedSalary;
+            applicantFound.Howdidyoufindus = applicant.Howdidyoufindus;
+            applicantFound.Notes = applicant.Notes.Length > 0 ? applicant.Notes : "";
+            applicantFound.EnglishSkills = applicant.EnglishSkills;
+            applicantFound.Nationality = applicant.Nationality;
+            if (applicant.ToCallDate != null)
+            {
+                applicantFound.ToCallDate = applicant.ToCallDate;
+            }
+            if (applicant.InterviewDate != null)
+            {
+                applicantFound.InterviewDate = applicant.InterviewDate;
+            }
+            applicantFound.CareerLevel = applicant.CareerLevel;
+            applicantFound.LastUdateLog = applicant.LastUdateLog;
+            applicantFound.ExamScore = applicant.ExamScore != 0 ? applicant.ExamScore : 0;
+            applicantFound.Title = applicant.Title;
+            applicantFound.ApplicationDate = applicant.ApplicationDate;
+            return applicantFound;
+        }
+
+        public void Dispose()
+        {
+            dbContext.Dispose();
         }
     }
+
+
 }

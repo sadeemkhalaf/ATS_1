@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ATS_1.Data;
 using ATS_1.Models;
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ATS_1.Services
 {
-    public class ApplicantEducationDetailsService : IApplicantEducationDetailsService
+    public class ApplicantEducationDetailsService : IApplicantEducationDetailsService, IDisposable
     {
         private readonly ApplicationDBContext dbContext;
 
@@ -15,30 +16,25 @@ namespace ATS_1.Services
         }
         public void AddEducationField(List<ApplicantEducationDetails> applicantEducation)
         {
-            using (dbContext) {
                 applicantEducation.ForEach(applicantEducationItem => {
                     dbContext.Entry<ApplicantEducationDetails>(applicantEducationItem).State = EntityState.Added;
                 });
                 dbContext.SaveChanges();
             }
-        }
 
         public void DeleteEducationField(int id)
         {
-            using (dbContext) {
                 ApplicantEducationDetails applicantEducation = dbContext.ApplicantEducationDetails.Find(id);
                 if ( applicantEducation != null ) {
                     dbContext.Entry<ApplicantEducationDetails>(applicantEducation).State = EntityState.Deleted;
                     dbContext.SaveChanges();
                 }
             }
-        }
 
         public void EditEducationField(ApplicantEducationDetails applicantEducation)
         {
-            using (dbContext)
-            {
-                ApplicantEducationDetails applicantEducationFound = dbContext.ApplicantEducationDetails.Find(applicantEducation.Id);
+            ApplicantEducationDetails applicantEducationFound = dbContext.ApplicantEducationDetails.Where(appl => appl.ApplicantId == applicantEducation.ApplicantId)
+                .ToList<ApplicantEducationDetails>().Where(applicant => applicant.Id == applicantEducation.Id ).FirstOrDefault<ApplicantEducationDetails>();
                     if (applicantEducationFound != null) {
                         applicantEducationFound.Degree = applicantEducation.Degree ?? applicantEducation.Degree;
                         applicantEducationFound.GPA = applicantEducation.GPA ?? applicantEducationFound.GPA;
@@ -51,23 +47,19 @@ namespace ATS_1.Services
                         dbContext.SaveChanges();
                     }
                 } 
-            }
 
         public List<ApplicantEducationDetails> GetAll()
         {
-            using (dbContext)
-            {
-                    return dbContext.ApplicantEducationDetails.ToList<ApplicantEducationDetails>();
-                
+                    return dbContext.ApplicantEducationDetails.ToList<ApplicantEducationDetails>();     
             }
-        }
 
         public List<ApplicantEducationDetails> GetAllApplicantEducationDetails(int ApplicantId)
         {
-            using (dbContext)
-            {
                 return dbContext.ApplicantEducationDetails.Where(appl => appl.ApplicantId == ApplicantId).ToList<ApplicantEducationDetails>();
-            }   
+            }
+        public void Dispose()
+        {
+            dbContext.Dispose();
         }
     }
 }

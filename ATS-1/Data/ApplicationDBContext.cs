@@ -12,6 +12,5 @@ namespace ATS_1.Data
         public DbSet<ApplicantStatusHistory> ApplicantStatusHistory { set; get; }
         public DbSet<ApplicantEducationDetails> ApplicantEducationDetails { set; get; }
         public DbSet<ApplicantFiles> ApplicantFiles { set; get; }
-
     }
 }

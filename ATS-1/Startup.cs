@@ -29,8 +29,8 @@ namespace ATS_1
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<ApplicationDBContext>(x => x.UseSqlServer(Configuration.GetConnectionString("ATSContext")), ServiceLifetime.Transient);
-            services.AddTransient<IApplicantService, ApplicantService>();
-            services.AddTransient<IActivityLogService, ActivityLogService>();
+            services.AddScoped<IApplicantService, ApplicantService>();
+            services.AddSingleton<IActivityLogService, ActivityLogService>();
             services.AddTransient<IApplicantStatusHistoryService, ApplicantStatusHistoryService>();
             services.AddTransient<IApplicantFilesService, ApplicantFilesService>();
             services.AddTransient<IApplicantEducationDetailsService, ApplicantEducationDetailsService>();

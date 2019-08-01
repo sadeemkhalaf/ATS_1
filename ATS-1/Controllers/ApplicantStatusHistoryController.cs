@@ -27,7 +27,6 @@ namespace ATS_1.Controllers
         {
             return Ok(_applicantStatusHistory.GetAllApplicantStatusHistory());
         }
-
         [EnableCors("myAllowedOrigins")]
         [Route("")]
         [Route("applicants")]
@@ -36,12 +35,10 @@ namespace ATS_1.Controllers
         {
             return Ok(_applicantStatusHistory.GetAllApplicantStatusHistory(id));
         }
-
         [HttpDelete("{id}")]
         public void DeleteApplicantsStatusHistories(int id)
         {
             _applicantStatusHistory.DeleteApplicantStatusHistory(id);
         }
-
     }
 }
