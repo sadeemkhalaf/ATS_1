@@ -19,7 +19,7 @@ namespace ATS_1.Controllers
         {
             _applicantService = applicantService;
         }
-        
+
         // GET api/applicants
         [EnableCors("myAllowedOrigins")]
         [Route("")]
@@ -53,9 +53,19 @@ namespace ATS_1.Controllers
         // POST api/applicants
         [EnableCors("myAllowedOrigins")]
         [HttpPost(Name = "PostApplicant")]
-        public void Post([FromBody] Applicant applicant)
+        public IActionResult Post([FromBody] Applicant applicant)
         {
-            _applicantService.InsertApplicant(applicant);
+            Applicant applicantFound = _applicantService.FindSimilarApplicant(applicant.Email, applicant.PhoneNumber);
+            if (applicantFound == null)
+            {
+                _applicantService.InsertApplicant(applicant);
+                return Ok("Successfully added a new applicant");
+            }
+            else
+            {
+                return Ok(applicantFound.Name + " is allready added");
+            }
+
         }
 
         // PUT api/applicants/5
@@ -68,10 +78,26 @@ namespace ATS_1.Controllers
 
         // DELETE api/applicants/5
         [EnableCors("myAllowedOrigins")]
-        [HttpDelete("{id}", Name ="DeleteApplicant")]
+        [HttpDelete("{id}", Name = "DeleteApplicant")]
         public void DeleteApplicant(int id)
         {
             _applicantService.DeleteApplicant(id);
         }
+
+        // POST api/applicants
+        [EnableCors("myAllowedOrigins")]
+        [HttpPost("query/", Name = "QueryApplicants")]
+        public IActionResult QueryApplicants([FromBody] ApplicantQueryStructure query)
+        {
+            List<Applicant> applicantsFound = _applicantService.GetApplicantsQueryResult(query);
+            if (applicantsFound != null)
+            {
+                return Ok(applicantsFound);
+            } else {
+                return Ok("there are no records found matchiung your query!");
+            }
+
+        }
     }
+
 }
