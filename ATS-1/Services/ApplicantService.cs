@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using ATS_1.Data;
 using ATS_1.Models;
@@ -59,21 +60,12 @@ namespace ATS_1.Services
 
         public void InsertApplicant(Applicant applicant)
         {
-                applicant.ApplicationDate = DateTime.Now.ToString();
-                Applicant applicantFound = FindSimilarApplicant(applicant.Email, applicant.PhoneNumber);
-                if (applicantFound == null)
-                {
-                    dbContext.Applicants.Add(applicant);
-                    ApplicantStatusHistory applicantStatusHistory = CreateApplicantStatusRecord(applicant);
-                    dbContext.Entry<ApplicantStatusHistory>(applicantStatusHistory).State = EntityState.Added;
-                    dbContext.SaveChanges();
-                }
-                else
-                {
-                    Applicant UpdateApplicant = this.AssignToApplicantObject(applicant, applicantFound);
-                    dbContext.Entry<Applicant>(UpdateApplicant).State = EntityState.Modified;
-                    dbContext.SaveChanges();
-                }
+           applicant.ApplicationDate = DateTime.Now.ToString();
+           applicant.Status = "Inbox";
+           dbContext.Applicants.Add(applicant);
+           ApplicantStatusHistory applicantStatusHistory = CreateApplicantStatusRecord(applicant);
+           dbContext.Entry<ApplicantStatusHistory>(applicantStatusHistory).State = EntityState.Added;
+           dbContext.SaveChanges();
         }
 
         private ApplicantStatusHistory CreateApplicantStatusRecord(Applicant applicantAdded)
@@ -85,7 +77,7 @@ namespace ATS_1.Services
             return applicantStatusHistory;
         }
 
-        private Applicant FindSimilarApplicant(string email, string phoneNumber)
+        public Applicant FindSimilarApplicant(string email, string phoneNumber)
         {
             return dbContext.Applicants.Where(appl => (appl.Email.Equals(email) ||
                                                 appl.PhoneNumber.Equals(phoneNumber)
@@ -94,12 +86,9 @@ namespace ATS_1.Services
 
         public void UpdateApplicant(Applicant applicant, int id)
         {
-            Applicant applicantFound;           
-            applicantFound = dbContext.Applicants.Where(appl => appl.Id == id).FirstOrDefault<Applicant>();
-            if (applicant != null)
+            Applicant applicantFound = dbContext.Applicants.Where(appl => appl.Id == id).FirstOrDefault<Applicant>();
+            if (applicantFound != null)
             {
-                if (applicantFound.Status != null)
-                {
                     if (!applicantFound.Status.Equals(applicant.Status))
                     {
                         ActivityLog ActivityLog = new ActivityLog();
@@ -113,7 +102,6 @@ namespace ATS_1.Services
                         applicantStatusHistory.Status = applicant.Status;
                         applicantStatusHistory.UpdateDate = DateTime.Now;
                         dbContext.Entry<ApplicantStatusHistory>(applicantStatusHistory).State = EntityState.Added;
-                    }
                 }
                 Applicant UpdateApplicant = this.AssignToApplicantObject(applicant, applicantFound);
                 dbContext.Entry<Applicant>(UpdateApplicant).State = EntityState.Modified;
@@ -139,9 +127,10 @@ namespace ATS_1.Services
             applicantFound.JoinDate = applicant.JoinDate;
             applicantFound.ExpectedSalary = applicant.ExpectedSalary;
             applicantFound.Howdidyoufindus = applicant.Howdidyoufindus;
-            applicantFound.Notes = applicant.Notes.Length > 0 ? applicant.Notes : "";
+            applicantFound.Notes = applicant.Notes != null ? applicant.Notes : "";
             applicantFound.EnglishSkills = applicant.EnglishSkills;
             applicantFound.Nationality = applicant.Nationality;
+            applicantFound.Rating = applicant.Rating;
             if (applicant.ToCallDate != null)
             {
                 applicantFound.ToCallDate = applicant.ToCallDate;
@@ -162,7 +151,20 @@ namespace ATS_1.Services
         {
             dbContext.Dispose();
         }
+
+        public List<Applicant> GetApplicantsQueryResult(ApplicantQueryStructure queryObject)
+        {
+                return this.dbContext.Applicants.Where(app => 
+                                                        (float.Parse( queryObject.ExperienceLevel.Last(), CultureInfo.InvariantCulture.NumberFormat) < float.Parse(app.Devexperience, CultureInfo.InvariantCulture.NumberFormat)
+                                                            || queryObject.ExperienceLevel.First() == null )
+                                                        && (float.Parse(queryObject.ExperienceLevel.First(), CultureInfo.InvariantCulture.NumberFormat) > float.Parse(app.Devexperience, CultureInfo.InvariantCulture.NumberFormat)
+                                                            || queryObject.ExperienceLevel.Last() == null )
+                                                        && (queryObject.CurrentPoisition.Contains(app.Currentposition) || queryObject.CurrentPoisition.Count == 0)
+                                                        && (queryObject.Status.Contains(app.Status) || queryObject.Status.Count == 0)
+                                                        && (queryObject.Rating.Contains(app.Rating) || queryObject.Rating.Count == 0)
+                                                        && (queryObject.Major.Contains(app.Major) || queryObject.Major.Count == 0)
+                                                        && (queryObject.ExperienceLevel.Contains(app.CareerLevel) || queryObject.ExperienceLevel.Count == 0)
+                                                        && (queryObject.GPA <= app.GPA2 || queryObject.GPA == null) ).ToList<Applicant>();
+        }
     }
-
-
 }

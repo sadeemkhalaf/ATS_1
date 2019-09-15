@@ -18,10 +18,10 @@ namespace ATS_1.Services
         // update (obj, id)
         void DeleteApplicant(int id);
         // delete (id)
-
         int GetStatusCountQueryResult(string status);
 
         List<Applicant> GetApplicantByStatus(string status);
-
+        Applicant FindSimilarApplicant(string email, string phoneNumber);
+        List<Applicant> GetApplicantsQueryResult(ApplicantQueryStructure queryObject);
     }
 }
