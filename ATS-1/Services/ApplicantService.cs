@@ -79,7 +79,7 @@ namespace ATS_1.Services
 
         public Applicant FindSimilarApplicant(string email, string phoneNumber)
         {
-            return dbContext.Applicants.Where(appl => (appl.Email.Equals(email) ||
+            return dbContext.Applicants.Where(appl => (appl.Email.Equals(email) &&
                                                 appl.PhoneNumber.Equals(phoneNumber)
                                             )).FirstOrDefault();
         }
