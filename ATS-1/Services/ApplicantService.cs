@@ -131,6 +131,7 @@ namespace ATS_1.Services
             applicantFound.EnglishSkills = applicant.EnglishSkills;
             applicantFound.Nationality = applicant.Nationality;
             applicantFound.Rating = applicant.Rating;
+            applicantFound.CVAttachment = applicant.CVAttachment;
             if (applicant.ToCallDate != null)
             {
                 applicantFound.ToCallDate = applicant.ToCallDate;
