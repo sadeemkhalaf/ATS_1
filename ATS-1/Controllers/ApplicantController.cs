@@ -86,7 +86,7 @@ namespace ATS_1.Controllers
 
         // POST api/applicants
         [EnableCors("myAllowedOrigins")]
-        [HttpPost("query/", Name = "QueryApplicants")]
+        [HttpPost("query", Name = "QueryApplicants")]
         public IActionResult QueryApplicants([FromBody] ApplicantQueryStructure query)
         {
             List<Applicant> applicantsFound = _applicantService.GetApplicantsQueryResult(query);

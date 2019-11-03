@@ -155,17 +155,42 @@ namespace ATS_1.Services
 
         public List<Applicant> GetApplicantsQueryResult(ApplicantQueryStructure queryObject)
         {
-                return this.dbContext.Applicants.Where(app => 
-                                                        (float.Parse( queryObject.ExperienceLevel.Last(), CultureInfo.InvariantCulture.NumberFormat) < float.Parse(app.Devexperience, CultureInfo.InvariantCulture.NumberFormat)
-                                                            || queryObject.ExperienceLevel.First() == null )
-                                                        && (float.Parse(queryObject.ExperienceLevel.First(), CultureInfo.InvariantCulture.NumberFormat) > float.Parse(app.Devexperience, CultureInfo.InvariantCulture.NumberFormat)
-                                                            || queryObject.ExperienceLevel.Last() == null )
-                                                        && (queryObject.CurrentPoisition.Contains(app.Currentposition) || queryObject.CurrentPoisition.Count == 0)
-                                                        && (queryObject.Status.Contains(app.Status) || queryObject.Status.Count == 0)
-                                                        && (queryObject.Rating.Contains(app.Rating) || queryObject.Rating.Count == 0)
-                                                        && (queryObject.Major.Contains(app.Major) || queryObject.Major.Count == 0)
-                                                        && (queryObject.ExperienceLevel.Contains(app.CareerLevel) || queryObject.ExperienceLevel.Count == 0)
-                                                        && (queryObject.GPA <= app.GPA2 || queryObject.GPA == null) ).ToList<Applicant>();
+            IQueryable<Applicant> Applicants = this.dbContext.Applicants;
+            if (queryObject.Status.Count > 0) {
+                Applicants = this.dbContext.Applicants.Where(app => queryObject.Status.Contains(app.Status.ToLower()) && app.Status != null);
+            }
+            if (queryObject.Major.Count > 0) {
+                 Applicants = Applicants.Where(app => queryObject.Major.Contains(app.Major.ToLower()) && app.Major != null);
+             }
+            if (queryObject.ExperienceLevel.Count > 0)
+            {
+                Applicants = this.dbContext.Applicants.Where(app => queryObject.ExperienceLevel.Contains(app.CareerLevel.ToLower()) && app.CareerLevel != null);
+            }
+            if (queryObject.Rating.Count > 0)
+            {
+                Applicants = Applicants.Where(app => queryObject.Rating.Contains(app.Rating.ToLower()) && app.Rating != null);
+            }
+            if (queryObject.GPA != 0)
+            {
+                Applicants = Applicants.Where(app => (queryObject.GPA <= app.GPA2));
+            }
+            if (queryObject.Devexperience != 0)
+            {
+                Applicants = Applicants.Where(app => (queryObject.Devexperience <= app.Devexperience) && app.Devexperience != 0);
+            }
+
+
+            return Applicants.ToList<Applicant>();
+            /*
+                         return this.dbContext.Applicants.Where(app =>
+                                                        (queryObject.Status == null || queryObject.Status.Contains(app.Status.ToLower()) || queryObject.Status.Count == 0)
+                                                        && (queryObject.Rating== null || queryObject.Rating.Contains(app.Rating.ToLower()) || queryObject.Rating.Count == 0)
+                                                        && (queryObject.Major == null || queryObject.Major.Contains(app.Major.ToLower()) || queryObject.Major.Count == 0)
+                                                        && (queryObject.ExperienceLevel == null || queryObject.ExperienceLevel.Contains(app.CareerLevel.ToLower()) || queryObject.ExperienceLevel.Count == 0)
+                                                        && (queryObject.GPA <= app.GPA2 || queryObject.GPA == null)
+                                                        && (Convert.ToInt32(queryObject.Devexperience) <= Convert.ToInt32(app.GPA2) || queryObject.Devexperience == null)
+                                                        ).ToList<Applicant>();
+             */
         }
     }
 }

@@ -7,7 +7,7 @@ namespace ATS_1.Models
 {
     public class ApplicantQueryStructure
     {
-        public List<int> ExperienceYears;
+        public int Devexperience;
         public List<string> CurrentPoisition;
         public List<string> Status;
         public Nullable<float> GPA;

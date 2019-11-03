@@ -21,7 +21,7 @@ namespace ATS_1.Models
         public Nullable<double> GPA1 { set; get; }
         public Nullable<double> GPA2 { set; get; }
         public string Rating { set; get; }
-        public string Devexperience { set; get; }
+        public Nullable<double> Devexperience { set; get; }
         public string TeamLeaderExperience { set; get; }
         public string Technologies { set; get; }
         public string Currentposition { set; get; }
