@@ -89,7 +89,7 @@ namespace ATS_1.Services
             Applicant applicantFound = dbContext.Applicants.Where(appl => appl.Id == id).FirstOrDefault<Applicant>();
             if (applicantFound != null)
             {
-                    if (!applicantFound.Status.Equals(applicant.Status))
+                    if (applicantFound.Status == null || !applicantFound.Status.Equals(applicant.Status))
                     {
                         ActivityLog ActivityLog = new ActivityLog();
                         ApplicantStatusHistory applicantStatusHistory = new ApplicantStatusHistory();
